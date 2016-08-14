@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="GBK"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.bigdata.dao.UserInfoMapper" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+    <bean id="dataInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.bigdata.dao.DataInfoMapper" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+    <bean id="provMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.bigdata.dao.ProvMapper" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+    <bean id="provDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.wbl.dao.ProvDao" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+
+    <bean id="chainACInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.lql.dao.ChainACInfoMapper" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+    <bean id="ipRegMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.lql.dao.IpRegMapper" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+    <bean id="acDataInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.lql.dao.AcDataInfoMapper" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+    <bean id="acUserInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.lql.dao.AcUserInfoMapper" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+    <bean id="acUserRelationMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.lql.dao.AcUserRelationMapper" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+    <bean id="policyMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.lql.dao.PolicyMapper" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+    <bean id="acAPIPolicyMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.lql.dao.AcAPIPolicyMapper" />
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory" />
+    </bean>
+    <bean id="searchWordMapper" class = "org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.bigdata.dao.SearchWordMapper"/>
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory"/>
+     </bean>
+
+    <bean id="outerDataDao" class = "org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.wbl.dao.OuterDataDao"/>
+        <property name="sqlSessionFactory" ref="mybatisSqlSessionFactory"/>
+    </bean>
+</beans>

@@ -1,0 +1,41 @@
+.btn_choosen a{
+    background-color: #0e90d2;
+    font-weight: bold;
+}
+.btn_nochoosen a{
+    background-color: #ffffff;
+    font-weight: bold;
+}
+
+.condition {
+    border: 2px;
+    margin: 3px;
+}
+a{
+    cursor: pointer;
+}
+fieldset{
+    margin: 2px;
+}
+.inp_text3{
+    height: 15px;
+}
+.label_on{
+    background-color: #428bca;
+    color: #ffffff;
+}
+
+.label_noton{
+    background-color: #ffffff;
+    color: #428bca;
+}
+
+footer .footer-infobox {
+    margin: auto;
+    width: 97%;
+    border-radius: 5px;
+    background-color: #000;
+    text-align: center;
+    color: #fff;
+    padding: 20px 0;
+}

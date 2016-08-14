@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 涓鸿繖涓猰apper鎸囧畾涓�涓敮涓�鐨刵amespace锛宯amespace鐨勫�间範鎯笂璁剧疆鎴愬寘鍚�+sql鏄犲皠鏂囦欢鍚嶏紝杩欐牱灏辫兘澶熶繚璇乶amespace鐨勫�兼槸鍞竴鐨�
+	渚嬪namespace="com.lql.mapping.userMapper"灏辨槸com.lql.mapping(鍖呭悕)+userMapper(userMapper.xml鏂囦欢鍘婚櫎鍚庣紑) -->
+<!--SELECT * FROM datainfo d ,userinfo u WHERE d.ownerId=u.userId AND d.dataId=#{dataId}-->
+<mapper namespace="com.lql.dao.IpRegMapper">
+    <select id="getIpRegByCompany" resultMap="resultUserMap" parameterType="java.lang.String">
+        select * from ip_reg where company=#{company}
+    </select>
+
+    <resultMap type="com.lql.domain.IpReg" id="resultUserMap">
+        <result column="ipId" property="ipId"/>
+        <result column="company" property="company"/>
+        <result column="ipName" property="ipName"/>
+        <result column="ipRegrexp" property="ipRegrexp"/>
+        <result column="description" property="description"/>
+    </resultMap>
+
+    <select id="getIpRegs" resultMap="resultUserMap">
+        select * from ip_reg
+    </select>
+
+    <select id="getIpCompany" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT company FROM ip_reg WHERE ipRegexp=#{ipRegexp}
+    </select>
+
+
+</mapper>

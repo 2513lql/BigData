@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+        <import resource="applicationContext-bean.xml"/>
+
+        <context:component-scan base-package="com.bigdata.controller"/>
+        <context:component-scan base-package="com.bigdata.dao"/>
+        <context:component-scan base-package="com.bigdata.service"/>
+        <context:component-scan base-package="com.bigdata.domain"/>
+        <context:component-scan base-package="com.bigdata.common"/>
+        <context:component-scan base-package="com.wbl"/>
+        <context:component-scan base-package="com.lql"/>
+        <context:property-placeholder location="classpath:/properties/datasource.properties"/>
+
+        <!--配置数据源-->
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+                <property name="driverClassName" value="${driverClassName}"/>
+                <property name="url" value="${url_test}"/>
+                <property name="username" value="${dbusername}"/>
+                <property name="password" value="${password}"/>
+                <property name="initialSize" value="1"/>
+                <property name="maxIdle" value="20"/>
+                <property name="maxActive" value="40"/>
+                <property name="maxWait" value="10"/>
+                <property name="minIdle" value="1"/>
+        </bean>
+
+        <bean id="otherDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+                <property name="driverClassName" value="${driverClassName}"/>
+                <property name="url" value="${otherDataSource.url}"/>
+                <property name="username" value="${otherDataSource.userName}"/>
+                <property name="password" value="${otherDataSource.password}"/>
+                <property name="initialSize" value="${otherDataSource.initialSize}"/>
+                <property name="maxActive" value="${otherDataSource.maxActive}"/>
+                <property name="maxWait" value="${otherDataSource.maxWait}"/>
+                <property name="maxIdle" value="${otherDataSource.maxIdle}"/>
+                <property name="minIdle" value="${otherDataSource.minIdle}"/>
+        </bean>
+
+        <!--配置多数据源-->
+        <bean id="multipleDataSource" class="com.wbl.modal.MultipleDataSource">
+                <property name="defaultTargetDataSource" ref="dataSource"/>
+                <property name="targetDataSources">
+                        <map>
+                                <entry key="dataSource" value-ref="dataSource"/>
+                                <entry key="otherDataSource" value-ref="otherDataSource"/>
+                        </map>
+                </property>
+        </bean>
+
+        <!--Spring与mybatis整合-->
+        <bean id="mybatisSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+                <!--<property name="dataSource" ref="dataSource"/>-->
+                <property name="dataSource" ref="multipleDataSource"/>
+                <!--<property name="configLocation"-->
+                <!--value="classpath:myBatis_config/mybatis_config.xml"></property>-->
+                <!--自动扫描Mapping.xml文件-->
+                <property name="mapperLocations" value="classpath:myBatis_config/*.xml"/>
+        </bean>
+
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+                <property name="basePackage" value="com.wbl.dao" />
+                <property name="sqlSessionFactoryBeanName" value="mybatisSqlSessionFactory"/>
+        </bean>
+
+        <bean id="mybatisSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+                <constructor-arg index="0" ref="mybatisSqlSessionFactory" />
+        </bean>
+</beans>

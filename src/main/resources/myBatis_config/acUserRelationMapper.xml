@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lql.dao.AcUserRelationMapper">
+
+    <select id="getRelationByUserAttris" resultType="java.lang.String">
+         SELECT relation FROM ac_user_relation WHERE requesterAttris = #{0} AND dataOwnerAttris=#{1}
+    </select>
+
+</mapper>

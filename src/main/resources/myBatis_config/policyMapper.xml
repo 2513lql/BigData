@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+	例如namespace="com.lql.mapping.userMapper"就是com.lql.mapping(包名)+userMapper(userMapper.xml文件去除后缀) -->
+<!--SELECT * FROM datainfo d ,userinfo u WHERE d.ownerId=u.userId AND d.dataId=#{dataId}-->
+
+<mapper namespace="com.lql.dao.PolicyMapper">
+    <select id="getPolicyInfoById" resultMap="resultPolicyMap" parameterType="java.lang.String">
+        SELECT * FROM ac_policy WHERE pid=#{id}
+    </select>
+
+    <resultMap type="com.lql.domain.Policy" id="resultPolicyMap">
+        <id column="pid" property="pid"/>
+        <result column="ptype" property="ptype"/>
+        <result column="operation" property="operation"/>
+        <result column="attributes" property="attributes"/>
+        <result column="vectors" property="vectors"/>
+        <result column="attributesNum" property="attributesNum"/>
+        <result column="vectorsLength" property="vectorsLength"/>
+        <result column="description" property="description"/>
+        <result column="xmlUrl" property="xmlUrl"/>
+        <result column="ownerId" property="ownerId"/>
+        <result column="policyName" property="policyName"/>
+    </resultMap>
+    <!--根据policyId集合查询该集合下的所有操作-->
+    <select id="getDescriptions" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT description FROM ac_policy WHERE pid=#{policyId}
+    </select>
+
+</mapper>

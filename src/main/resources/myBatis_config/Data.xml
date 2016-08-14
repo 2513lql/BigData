@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.DataInfoMapper">
+    <sql id="DataSelectCondition">
+        <if test="DataId!=null and DataId!=''">
+            and a.dataId = #{DataId}
+        </if>
+        <if test="UserName!=null and UserName!=''">
+            and b.userName LIKE CONCAT('%',#{UserName},'%')
+        </if>
+        <if test="DataName!=null and DataName!=''">
+            and a.dataName LIKE CONCAT('%',#{DataName},'%')
+        </if>
+        <if test="Type!=null and Type!=''">
+            and a.type = #{Type}
+        </if>
+        <if test="FunctionType!=null and FunctionType!=''">
+            and a.functionType = #{functionType}
+        </if>
+        <if test="DataStatus!=null and DataStatus!=-1">
+            and a.status = #{DataStatus}
+        </if>
+        <if test="OwnerId!=null and OwnerId!=-1">
+            and a.ownerId = #{OwnerId}
+        </if>
+
+    </sql>
+    <select id="GetDataList" resultType="com.bigdata.domain.DataInfo" parameterType="com.bigdata.tools.DataInfoSearchModel">
+        SELECT a.*,b.userName ownerName
+        FROM datainfo a INNER JOIN  userinfo b ON a.ownerid=b.userid
+        <where>
+            1=1
+            <include refid="DataSelectCondition"></include>
+        </where>
+        <if test="OrderBy!=null and OrderBy!=''">
+            <if test="OrderBy=='date0'">
+                ORDER BY a.time DESC
+            </if>
+            <if test="OrderBy=='date1'">
+                ORDER BY a.time
+            </if>
+            <if test="OrderBy=='size0'">
+                ORDER BY a.dataSize DESC
+            </if>
+            <if test="OrderBy=='size1'">
+                ORDER BY a.dataSize
+            </if>
+        </if>
+
+        <if test="pageSize!=null and pageSize>0 and pageLimit!=null and pageLimit>=0">
+            LIMIT #{pageLimit},#{pageSize}
+        </if>
+    </select>
+
+    <select id="GetDataCount" resultType="int" parameterType="com.bigdata.tools.PageModel">
+        SELECT COUNT(*) FROM  datainfo a INNER JOIN  userinfo b on a.ownerid=b.userid
+        <where>
+            1=1
+            <include refid="DataSelectCondition"></include>
+        </where>
+    </select>
+
+    <sql id="UpdateDataInfoCondition">
+        <if test="dataName!=null and dataName!=''">
+            ,datainfo.dataName = #{dataName}
+        </if>
+        <if test = "description!=null and description!=''" >
+            ,datainfo.description = #{description}
+        </if>
+        <if test="status!=null and status!=''">
+            ,datainfo.status = #{status}
+        </if>
+        <if test="functionType!=null and functionType!=null">
+            ,datainfo.functionType =#{functionType}
+        </if>
+    </sql>
+
+    <update id="UpdateDataInfo" parameterType="com.bigdata.domain.DataInfo">
+        UPDATE datainfo
+        SET datainfo.dataId=#{dataId}
+        <include refid="UpdateDataInfoCondition"></include>
+        WHERE datainfo.dataId = #{dataId};
+    </update>
+
+    <sql id="Search">
+
+        <foreach item="item" index="index" collection="description">
+            OR a.description  LIKE CONCAT('%',#{item},'%')
+        </foreach>
+    </sql>
+    <select id = "SearchByDescription" parameterType="com.bigdata.tools.PageModel" resultType = "com.bigdata.domain.DataInfo">
+        SELECT a.*,b.username ownerName
+        FROM datainfo a INNER JOIN userinfo b ON a.ownerid=b.userid
+            <where>
+                1=0
+            <include refid="Search"></include>
+        </where>
+        <if test="pageSize!=null and pageSize>0 and pageLimit!=null and pageLimit>=0">
+            LIMIT #{pageLimit},#{pageSize}
+        </if>
+    </select>
+    <select id = "SearchByDescriptionCount" parameterType="com.bigdata.tools.PageModel" resultType = "int">
+        SELECT COUNT(*)
+        FROM datainfo a INNER JOIN userinfo b ON a.ownerid=b.userid
+        <where>
+            1=0
+            <include refid="Search"></include>
+        </where>
+    </select>
+    <select id = "SearchByDataId" parameterType="com.bigdata.tools.PageModel" resultType="com.bigdata.domain.DataInfo">
+        SELECT a.*,b.username ownerName
+        FROM datainfo a INNER JOIN userinfo b ON a.ownerid = b.userid
+          <where>
+              a.dataId =#{dataId}
+          </where>
+    </select>
+
+    <select id="GetLastDataId" resultType="String" parameterType="String">
+        SELECT  dataId FROM datainfo WHERE dataId LIKE CONCAT(#{plantName},'%')
+        ORDER BY datainfo.time desc LIMIT 1
+    </select>
+
+    <insert id="InsertData" parameterType="com.bigdata.domain.DataInfo">
+        INSERT INTO datainfo
+        (dataId,ownerId,dataName,functionType,datainfo.type,description,status,relation,datainfo.time,dataSize)
+        VALUES
+        (#{dataId},#{ownerId},#{dataName},#{functionType},#{type},#{description},0,1,#{time},#{dataSize})
+    </insert>
+
+    <select id="GetTopDownloadTimes" resultType="com.bigdata.domain.DataInfo">
+        SELECT * FROM datainfo ORDER BY datainfo.downloadTimes DESC LIMIT 0,10
+    </select>
+
+    <select id="GetLastestData" resultType="com.bigdata.domain.DataInfo">
+        SELECT * FROM datainfo ORDER BY datainfo.time DESC LIMIT 0,10
+    </select>
+
+    <select id = "SearchByDataName" resultType="com.bigdata.domain.DataInfo" parameterType="String">
+        SELECT * FROM datainfo
+        WHERE datainfo.dataName = #{dataName}
+    </select>
+
+    <select id = "DataImport" parameterType="String">
+        LOAD DATA LOCAL INFILE #{fileName}
+        INTO TABLE test FIELDS TERMINATED BY ',' IGNORE 1 LINES
+    </select>
+
+</mapper>

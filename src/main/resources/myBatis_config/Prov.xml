@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.ProvMapper">
+    <sql id = "ProvSelectCondition">
+        <if test="Pid!=null and Pid!=-1">
+            and a.Pid = #{Pid}
+        </if>
+        <if test ="Prefix!=null and Prefix!=''">
+            and a.Prefix = #{Prefix}
+        </if>
+        <if test="Entity!=null and Entity!=''">
+            and a.Entity = #{Entity}
+        </if>
+        <if test="Agent!=null and Agent!=''">
+            and a.Agent =#{Agent}
+        </if>
+        <if test="Activity!=null and Activity!=''">
+            and a.Activity = #{Activity}
+        </if>
+        <if test="Used!=null and Used!=''">
+            and a.Used = #{Used}
+        </if>
+
+
+    </sql>
+    <select id="GetProvCount" parameterType="com.bigdata.tools.ProvInfoModel" resultType="int">
+        SELECT count(*) FROM prov a
+        <where>
+            1=1
+            <include refid="ProvSelectCondition"></include>
+        </where>
+    </select>
+    <select id="GetProvList" parameterType="com.bigdata.tools.ProvInfoModel" resultType="com.bigdata.domain.Prov">
+        SELECT * FROM prov a
+        <where>
+            1=1
+            <include refid="ProvSelectCondition"></include>
+            <if test="pageSize!=null and pageSize>0 and pageLimit!=null and pageLimit>=0">
+                LIMIT #{pageLimit},#{pageSize}
+            </if>
+        </where>
+    </select>
+    <insert id="InsertProv" parameterType="com.bigdata.domain.Prov">
+        INSERT INTO prov(prefix,entity,agent,activity,used,prov.time) VALUES (#{prefix},#{entity},#{agent},#{activity},#{used},#{time})
+    </insert>
+</mapper>

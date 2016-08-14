@@ -1,0 +1,43 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         metadata-complete="true" version="3.0">
+
+        <display-name>BigData</display-name>
+        <context-param>
+                <param-name>contextConfigLocation</param-name>
+                <param-value>classpath:applicationContext.xml</param-value>
+        </context-param>
+
+        <listener>
+                <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+        </listener>
+        <listener>
+                <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+        </listener>
+
+        <!--session超时设置（单位：分钟）-->
+        <session-config>
+                <session-timeout>60</session-timeout>
+        </session-config>
+
+        <servlet>
+                <servlet-name>springmvc</servlet-name>
+                <servlet-class>
+                        org.springframework.web.servlet.DispatcherServlet
+                </servlet-class>
+                <load-on-startup>1</load-on-startup>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>springmvc</servlet-name>
+                <url-pattern>/</url-pattern>
+        </servlet-mapping>
+        <!--<welcome-file-list>-->
+                <!--<welcome-file>/index.html</welcome-file>-->
+                <!--&lt;!&ndash;<welcome-file>/views/acviews/createApiPolicy.jsp</welcome-file>&ndash;&gt;-->
+        <!--</welcome-file-list>-->
+</web-app>

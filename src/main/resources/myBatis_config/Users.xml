@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bigdata.dao.UserInfoMapper">
+    <select id="GetUserList" resultType="com.bigdata.domain.UserInfo" parameterType="com.bigdata.tools.PageModel">
+        select a.userid,a.username,a.password,a.insertdate,a.email,a.apikey,a.hobby,a.profession,a.company,a.type,a.department,a.plate,a.url
+        from userinfo a
+        <if test="pageSize!=null and pageSize>0 and pageLimit!=null and pageLimit>=0">
+            ORDER BY a.userid DESC
+        </if>
+
+        <if test="pageSize!=null and pageSize>0 and pageLimit!=null and pageLimit>=0">
+            LIMIT #{pageLimit},#{pageSize}
+        </if>
+    </select>
+
+    <select id="GetUserCount" resultType="int">
+        select count(*) FROM  userinfo
+    </select>
+
+    <select id="GetUserInfoByName" resultType="com.bigdata.domain.UserInfo" parameterType="String">
+        select a.* from userinfo a WHERE a.userName = #{userName}
+    </select>
+
+    <insert id ="InsertUserInfo" parameterType="com.bigdata.domain.UserInfo">
+        INSERT INTO userinfo(userId,userName,password,insertDate,email,apiKey,hobby,profession,company,department,type,plate,url)
+        VALUES (#{userId},#{userName},#{password},#{insertDate},#{email},#{apiKey},#{hobby},#{profession},#{company},#{department},#{type}
+        ,#{plate},#{url})
+    </insert>
+
+    <update id ="updateUserInfo" parameterType="com.bigdata.domain.UserInfo">
+        UPDATE userinfo
+        SET
+        userinfo.userName = #{userName}
+        <if test="password!=null and password!=''">
+            ,userinfo.password=#{password}
+        </if>
+        <if test="apiKey!=null and apiKey!=''">
+            ,userinfo.apiKey=#{apiKey}
+        </if>
+
+
+        <if test="hobby!=null and hobby!=''">
+             ,userinfo.hobby=#{hobby}
+        </if>
+        <if test="profession!=null and profession!=''">
+            ,userinfo.profession=#{profession}
+        </if>
+        <if test="company!=null and company!=''">
+            ,userinfo.company=#{company}
+        </if>
+        <if test="department!=null and department!=''">
+            ,userinfo.department = #{department}
+        </if>
+        WHERE userinfo.userName = #{userName}
+    </update>
+</mapper>

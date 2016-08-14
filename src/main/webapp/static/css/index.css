@@ -1,0 +1,81 @@
+.box1{
+    width: 300px;
+    height: 350px;
+    margin: 15px;
+    padding: 10px;
+    min-height: 200px;
+    position:relative;
+    display: inline-block;
+    background: -webkit-gradient(linear, 0% 20%, 0% 1000%, from(#fff), to(#fff), color-stop(.1,#f3f3f3));
+    border: 1px solid #ccc;
+    -webkit-box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.1) inset;
+    -webkit-border-bottom-right-radius: 6px 50px;
+}
+
+.carousel{
+    position: relative;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    width: 100%;
+}
+
+.carousel-inner>.item{
+    max-height: 640px;
+}
+
+.carousel-inner>.item>img{
+.img-responsive();
+    line-height: 1;
+    min-width: 100%;
+    height: 578px;
+}
+
+.carousel-indicators{
+    position: absolute;
+    bottom: 20px;
+    margin-bottom: 0;
+    width: 30%;
+}
+
+.ad_datatext span {
+    color: #dc3929;
+    font-size: 70px;
+}
+
+.ad_datatext {
+    font-size: 40px;
+    line-height: 1.5em;
+    text-align: center;
+
+}
+.caption{
+    font-family: "微软雅黑";
+}
+.number1{
+    color:#ef3c49;
+    display: inline-block;
+    font-family: "Arial";
+    font-size:20px;
+    text-align: center;
+    vertical-align: middle;
+    width:35px;
+}
+.number4{
+    color:#4693cf;
+    display: inline-block;
+    font-family: "Arial";
+    font-size:20px;
+    text-align: center;
+    vertical-align: middle;
+    width:35px;
+}
+a{
+    color: #000000;
+}
+a:hover{
+    color:steelblue;
+    /*background-color: #ffff00;*/
+}
+.thumbnail{
+    height: 400px;
+}

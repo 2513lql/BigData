@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wbl.dao.DataAnalyseDao">
+        <select id="getDataOperateTimesByDays" resultType="com.wbl.modal.CountModal" parameterType="string">
+                SELECT <![CDATA[
+                DATE_FORMAT(prov.time,"%Y-%m-%d")
+                ]]> AS name,COUNT(*) AS count
+                FROM prov
+                WHERE prov.entity = #{dataId}
+                AND <![CDATA[
+                 DATE_FORMAT(prov.time,"%Y") = #{year}
+                ]]>
+                AND <![CDATA[
+                 DATE_FORMAT(prov.time,"%m") = #{month}
+                ]]>
+                GROUP BY
+                <![CDATA[
+                DATE_FORMAT(prov.time,"%Y-%m-%d")
+                ]]>
+                ORDER BY name DESC
+        </select>
+
+        <select id="getDataOperateTimesByMonth" resultType="com.wbl.modal.CountModal">
+                SELECT <![CDATA[
+                DATE_FORMAT(prov.time,"%Y-%m")
+                ]]> AS name,COUNT(prov.entity) AS count
+                FROM prov
+                WHERE prov.entity = #{dataId}
+                AND <![CDATA[
+                DATE_FORMAT(prov.time,"%Y") = #{year}
+                ]]>
+                GROUP BY
+                <![CDATA[
+                DATE_FORMAT(prov.time,"%Y-%m")
+                ]]>
+                ORDER BY name DESC
+        </select>
+
+        <select id="getDataOperateTimesByYear" resultType="com.wbl.modal.CountModal">
+                SELECT <![CDATA[
+                DATE_FORMAT(prov.time,"%Y")
+                ]]> AS name,COUNT(prov.entity) AS count
+                FROM prov
+                WHERE prov.entity = #{dataId}
+                GROUP BY
+                <![CDATA[
+                DATE_FORMAT(prov.time,"%Y")
+                ]]>
+                ORDER BY name DESC
+        </select>
+
+        <select id="getDataOperateTimesByType" resultType="com.wbl.modal.CountModal" parameterType="string">
+                SELECT prov.activity AS name,COUNT(prov.activity) AS count
+                FROM prov
+                WHERE prov.entity = #{dataId}
+                GROUP BY prov.activity
+        </select>
+
+        <select id="getHotDataByDownloadTimes" resultType="com.wbl.modal.CountModal">
+                SELECT dataName AS name,COUNT(dataId) AS count
+                FROM prov,datainfo
+                WHERE prov.entity = dataInfo.dataId
+                AND prov.activity = "DOWNLOAD"
+                group by dataId
+                order by count desc
+                limit 0,6
+        </select>
+
+        <select id="getSupplyTimesByDataId" resultType="com.wbl.modal.CountModal" parameterType="String">
+                SELECT "SUPPLY" AS name,COUNT(*) AS count
+                FROM prov
+                WHERE prov.entity = #{dataId} AND prov.activity = "UPLOAD" OR "IMPORT"
+
+        </select>
+
+
+        <select id="getUseTimesByDataId" resultType="com.wbl.modal.CountModal" parameterType="String">
+                SELECT "USED" AS name,COUNT(*) AS count
+                FROM prov
+                WHERE prov.entity = #{dataId} AND prov.activity = "DOWNLOAD" OR "EXPORT" OR "AGGREGATION"
+        </select>
+
+</mapper>

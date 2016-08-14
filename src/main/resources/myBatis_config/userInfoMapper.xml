@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+	例如namespace="com.lql.mapping.userMapper"就是com.lql.mapping(包名)+userMapper(userMapper.xml文件去除后缀) -->
+<!--SELECT * FROM datainfo d ,userinfo u WHERE d.ownerId=u.userId AND d.dataId=#{dataId}-->
+<mapper namespace="com.lql.dao.AcUserInfoMapper">
+    <select id="getUserInfoById" resultMap="resultUserMap" parameterType="java.lang.Integer">
+        select * from userinfo where userId=#{userId}
+    </select>
+
+    <resultMap type="com.bigdata.domain.UserInfo" id="resultUserMap">
+        <result column="userId" property="userId"/>
+        <result column="userName" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="insertDate" property="insertDate"/>
+        <result column="email" property="email"/>
+        <result column="apiKey" property="apiKey"/>
+        <result column="hobby" property="hobby"/>
+        <result column="profession" property="profession"/>
+        <result column="company" property="company"/>
+        <result column="department" property="department"/>
+        <result column="type" property="type"/>
+        <result column="plate" property="plate"/>
+    </resultMap>
+</mapper>
